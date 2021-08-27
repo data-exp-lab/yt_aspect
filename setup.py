@@ -4,9 +4,10 @@ import os
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-project_dir = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(project_dir, "requirements.txt")) as f:
-        reqd_pkgs = list(f.read().splitlines())
+reqd_pkgs = [
+             "yt>=4.0", 
+             "xmltodict",
+            ] 
 
 setuptools.setup(
     name="yt_aspect",
