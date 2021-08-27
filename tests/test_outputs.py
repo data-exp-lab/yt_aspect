@@ -1,7 +1,7 @@
 import yt
-import yt_aspect  # NOQA
 from yt.testing import assert_array_equal, assert_equal
 
+import yt_aspect  # NOQA
 
 _node_names = ("velocity", "p", "T")
 box_convect = "aspect/tests/shell_2d/solution/solution-00002.pvtu"

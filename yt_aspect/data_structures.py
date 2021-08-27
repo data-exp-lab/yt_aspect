@@ -3,14 +3,13 @@ import os
 import stat
 
 import numpy as np
-
+import xmltodict
 from yt.data_objects.index_subobjects.unstructured_mesh import UnstructuredMesh
 from yt.data_objects.static_output import Dataset
 from yt.data_objects.unions import MeshUnion
 from yt.funcs import setdefaultattr
 from yt.geometry.unstructured_mesh_handler import UnstructuredIndex
 from yt.utilities.logger import ytLogger as mylog
-import xmltodict
 
 from .fields import ASPECTFieldInfo
 from .util import decode_piece

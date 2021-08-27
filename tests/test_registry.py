@@ -1,5 +1,6 @@
-import yt_aspect  # NOQA
 from yt.utilities.object_registries import output_type_registry
+
+import yt_aspect  # NOQA
 
 
 def test_frontend_registry():
