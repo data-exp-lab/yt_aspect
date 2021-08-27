@@ -1,9 +1,8 @@
 import os
 
 import numpy as np
-
-from yt.utilities.io_handler import BaseIOHandler
 import xmltodict
+from yt.utilities.io_handler import BaseIOHandler
 
 from .util import decode_binary, decode_piece, type_decider
 
@@ -52,14 +51,15 @@ class IOHandlerASPECT(BaseIOHandler):
             # for now, we have all file info in single chunk
             mesh_name = f"connect{chunk_id}"
             if "all" in ftype_list or mesh_name in ftype_list:
-                # mask here is the **element** mask. i.e., shape(mask) = (n_elments,)
-                # rather than (n_elements, n_verts). These apply to all fields, so
-                # pull them out here:
+                # mask here is the **element** mask. i.e.,
+                #     shape(mask) = (n_elments,)
+                # rather than (n_elements, n_verts). These apply to all fields,
+                # so pull them out here:
                 mask = selector.fill_mesh_cell_mask(mesh)  # global mask
                 if mask is not None:
-                    # each mesh piece will pull the connectivity and mask values
+                    # each mesh piece will pull the connectivity, mask values
                     # for the indices corresponding to each vtu file
-                    for vtu_id, vtu_filename in enumerate(mesh.filenames):
+                    for vtu_id, vtu_fi in enumerate(mesh.filenames):
 
                         # the element mask for this piece
                         element_offset_start = el_counts[0:vtu_id].sum()
@@ -67,7 +67,7 @@ class IOHandlerASPECT(BaseIOHandler):
                         vtu_mask = mask[element_offset_start:element_offset_end]
 
                         # load this vtu's part of the mesh
-                        vtu_file = os.path.join(self.ds.data_dir, vtu_filename)
+                        vtu_file = os.path.join(self.ds.data_dir, vtu_fi)
                         f2id = self.ds.parameters["field_to_piece_index"][vtu_file]
                         with open(vtu_file) as data:
                             xml = xmltodict.parse(data.read())
