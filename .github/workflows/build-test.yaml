@@ -23,7 +23,7 @@ jobs:
         python -m pip install flake8 pytest
         if [ -f tests/test_requirements.txt ]; then python -m pip install -r tests/test_requirements.txt; fi
         python -m pip install --upgrade numpy PyOpenGL_accelerate
-    - name: Setup yt_idv
+    - name: Setup yt_aspect
       run: |
         python -m pip install -e .
     - name: Run Tests
