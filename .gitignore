@@ -133,3 +133,6 @@ dmypy.json
 
 # temp files
 *.swp
+
+# dev environments
+*.idea
