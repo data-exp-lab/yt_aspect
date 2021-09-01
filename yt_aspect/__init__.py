@@ -6,4 +6,3 @@ from .data_structures import ASPECTDataset
 from .fields import ASPECTFieldInfo  # noqa: F401
 from .io import IOHandlerASPECT  # noqa: F401
 
-output_type_registry["ASPECTDataset"] = ASPECTDataset
