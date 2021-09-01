@@ -12,7 +12,7 @@ reqd_pkgs = [
 
 setuptools.setup(
     name="yt_aspect",
-    version="0.0.1",
+    version="0.0.2",
     author="Chris Havlin",
     author_email="chris.havlin@gmail.com",
     description="A yt plugin for loading ASPECT output",
