@@ -7,7 +7,7 @@ This package is a plugin for [yt](https://yt-project.org) that adds a frontend f
 Use pip to install:
 
 ```
-pip install yt_aspect
+pip install yt-aspect
 ```
 
 To install a development version,  clone this repository, `cd` into the clone and then install locally with
