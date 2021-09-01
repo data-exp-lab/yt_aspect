@@ -1,5 +1,23 @@
 # yt_aspect
 
-This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://geodynamics.org) unstructured mesh output.
+This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://aspect.geodynamics.org/) unstructured mesh output.
 
-experimenting with a plugin route for the yt-aspect frontend
+## Installation
+
+Use pip to install:
+
+```
+pip install yt_aspect
+```
+
+## Usage
+
+To load a single timestep:
+
+```python
+import yt
+import yt_aspect
+
+ds = yt.load('output_convection_box_3d/solution/solution-00000.pvtu')
+```
+
