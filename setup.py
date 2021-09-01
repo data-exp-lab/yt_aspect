@@ -26,7 +26,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "yt_aspect"},
+    package_dir={"yt_aspect": "yt_aspect"},
     packages=setuptools.find_packages(where="yt_aspect"),
     python_requires=">=3.6",
 )
