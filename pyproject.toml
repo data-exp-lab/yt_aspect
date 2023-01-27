@@ -22,3 +22,12 @@ dependencies=['yt>4.1.0', 'xmltodict']
 [project.urls]
 "Homepage" = "https://github.com/data-exp-lab/yt_aspect"
 "Bug Tracker" = "https://github.com/data-exp-lab/yt_aspect/issues"
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+skip =  ["venv", "benchmarks"]
