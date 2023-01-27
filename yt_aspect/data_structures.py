@@ -144,10 +144,9 @@ class ASPECTDataset(Dataset):
         A class used to represent a single timestep of a on-disk ASPECT dataset
 
         """
-        self.parameter_filename = filename
         self.data_dir = os.path.dirname(filename)
-        self.fluid_types += self._get_fluid_types()
         super().__init__(filename, dataset_type, units_override=units_override)
+        self.fluid_types += self._get_fluid_types()
         self.index_filename = filename
         self.storage_filename = storage_filename
         self.default_field = ("all", "T")
