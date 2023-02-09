@@ -114,7 +114,7 @@ def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
         # at the final level
         return c_key in dict_inst
     else:
-        if c_key in dict_inst and isinstance(dict_inst[c_key]):
+        if c_key in dict_inst and isinstance(dict_inst[c_key], dict):
             # go deeper
             return _recursive_key_check(dict_inst[c_key], nested_key_list[1:])
         else:

@@ -1,0 +1,22 @@
+[ASPECT]
+
+[ASPECT.cartesian_3D_nproc4]
+archive_path = "data/aspect/output_convection_box_3d"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "nproc_4/solution"
+info = "mpirun with 4 procs, ASPECT cookbook, multiple timesteps"
+
+[ASPECT.cartesian_3D_nproc1]
+archive_path = "data/aspect/output_convection_box_3d"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "nproc_1/solution"
+info = "single processor ASPECT cookbook, multiple timesteps"
+
+[PVTU]
+
+[PVTU.cleaned_aspect]
+archive_path = "data/pvtu/aspect_cleaned_output_convection_box_nproc4"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "solution"
+info = "cleaned version of ASPECT run that should be identified as a general PVTU not ASPECT"
+

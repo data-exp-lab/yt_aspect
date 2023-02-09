@@ -1,16 +1,35 @@
+import pytest
 import yt
-from yt.testing import assert_array_equal, assert_equal
-
+import unyt
+import os
 import yt_aspect  # NOQA
+import numpy as np
 
 _node_names = ("velocity", "p", "T")
 box_convect = "aspect/tests/shell_2d/solution/solution-00002.pvtu"
 
+def get_file_path_from_data_info(data_info_dict, dataset_name):
+    ds_info = data_info_dict["ASPECT"][dataset_name]
+    final_folder = os.path.split(ds_info["archive_path"])[-1]
+    fi_dir = os.path.join(data_info_dict["base_dir"],
+                          ds_info["archive_path"],
+                          final_folder,
+                          ds_info["relative_unpacked_path"])
+    return fi_dir
 
-def test_2d_pvtu_load():
-    assert_equal("solution-00002.pvtu", "solution-00002.pvtu")
-    # ds = yt.load(box_convect)
-    # assert_equal(str(ds), "solution-00002.pvtu")
-    # assert_equal(ds.dimensionality, 2)
-    # assert_equal(len(ds.parameters["vtu_files"]), 5)
-    # assert_array_equal(ds.parameters["nod_names"], _node_names)
+@pytest.mark.parametrize("dataset_name", ("cartesian_3D_nproc4", "cartesian_3D_nproc1"))
+def test_3d_aspect_load(pvtu_test_data, dataset_name):
+
+    fi_dir = get_file_path_from_data_info(pvtu_test_data, dataset_name)
+    fi = os.path.join(fi_dir, "solution-00002.pvtu")
+
+    if os.path.isfile(fi) is False:
+        pytest.skip(f"Could not locate {fi}")
+
+    ds = yt.load(fi)
+    assert ds.dataset_type == "aspect"
+    assert ds.dimensionality == 3
+
+    ad = ds.all_data()
+    T = ad[("connect0", "T")][0]
+    assert T.units == unyt.K
