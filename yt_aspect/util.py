@@ -1,3 +1,7 @@
+try:
+    from defusedexpat.pyexpat import ExpatError
+except ImportError:
+    from xml.parsers.expat import ExpatError
 import base64
 import re
 import string
@@ -96,3 +100,25 @@ def get_top_levels(info_records):
             top_levels.append([idx, clean_line])
 
     return top_levels
+
+
+
+def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
+
+    key_len = len(nested_key_list)
+    if key_len == 0:
+        raise ValueError("nested_key_list must have at least 1 element")
+
+    c_key = nested_key_list[0]  # the current key
+    if key_len == 1:
+        # at the final level
+        return c_key in dict_inst
+    else:
+        if c_key in dict_inst and isinstance(dict_inst[c_key]):
+            # go deeper
+            return _recursive_key_check(dict_inst[c_key], nested_key_list[1:])
+        else:
+            # either the key DNE or the next level is not another
+            # dictionary, in which case the next keys cannot exist
+            return False
+
