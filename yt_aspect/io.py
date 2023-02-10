@@ -7,9 +7,9 @@ from yt.utilities.io_handler import BaseIOHandler
 from .util import decode_binary, decode_piece, type_decider
 
 
-class IOHandlerASPECT(BaseIOHandler):
+class IOHandlerPVTU(BaseIOHandler):
     _particle_reader = False
-    _dataset_type = "aspect"
+    _dataset_type = "pvtu"
     _INDEX_OFFSET = 1
     _vector_fields = ("Coordinates", "velocity")
     _xyz_to_dim = {"x": 0, "y": 1, "z": 2}
@@ -136,3 +136,7 @@ class IOHandlerASPECT(BaseIOHandler):
         # This reads the data from a single chunk, and is only used for
         # caching.
         pass
+
+
+class IOHandlerASPECT(IOHandlerPVTU):
+    _dataset_type = "aspect"
