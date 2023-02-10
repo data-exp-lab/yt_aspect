@@ -1,8 +1,6 @@
 [flake8]
 max-line-length = 88
 exclude = docs,
-    benchmarks,
-    */api.py,
     */__init__.py,
 ignore = E203,
     E266,
