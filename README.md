@@ -1,6 +1,6 @@
 # yt_aspect
 
-This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://aspect.geodynamics.org/) unstructured mesh output. Currently in initial testing...
+This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://aspect.geodynamics.org/) unstructured mesh output in .pvtu format. It also includes a general .pvtu frontend. 
 
 ## Installation
 
