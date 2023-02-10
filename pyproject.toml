@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "yt_aspect"
-version = "0.0.3"
+version = "0.1.0"
 authors = [
   { name="Chris Havlin", email="chris.havlin@gmail.com" },
 ]
 description="A yt plugin for loading ASPECT output"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -23,11 +23,3 @@ dependencies=['yt>4.1.0', 'xmltodict']
 "Homepage" = "https://github.com/data-exp-lab/yt_aspect"
 "Bug Tracker" = "https://github.com/data-exp-lab/yt_aspect/issues"
 
-[tool.black]
-line-length = 88
-target-version = ['py37']
-
-[tool.isort]
-profile = "black"
-combine_as_imports = true
-skip =  ["venv", "benchmarks"]

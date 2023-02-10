@@ -1,0 +1,26 @@
+python -m pip install build twine
+python -m build
+twine check dist/*
+# check that the
+on: pull_request
+
+name: Build Verification
+
+jobs:
+  build-and-publish:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+          python -m pip install --upgrade pip 
+          python -m pip install -U build twine
+    - name: Build and check source tarball
+      run: python -m build
+    - name: Twine check
+      run: twine check dist/*
