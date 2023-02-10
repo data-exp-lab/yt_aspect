@@ -1,9 +1,9 @@
+try:
+    from defusedexpat.pyexpat import ExpatError  # noqa: F401
+except ImportError:
+    from xml.parsers.expat import ExpatError  # noqa: F401
 import base64
-import re
-import string
 import zlib
-from collections import OrderedDict
-from itertools import takewhile
 
 import numpy as np
 
@@ -40,59 +40,21 @@ def decode_binary(blob, use_zlib=True, dtype="<f4"):
     return np.frombuffer(first, dtype="<f4"), np.frombuffer(second, dtype=dtype)
 
 
-def get_num_pseudo_dims(coords):
-    D = coords.shape[1]
-    return sum([np.all(coords[:, dim] == 0.0) for dim in range(D)])
+def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
 
+    key_len = len(nested_key_list)
+    if key_len == 0:
+        raise ValueError("nested_key_list must have at least 1 element")
 
-def sanitize_string(s):
-    _printable = {ord(_) for _ in string.printable}
-    return "".join([chr(_) for _ in takewhile(lambda a: a in _printable, s)])
-
-
-def load_info_records(info_records):
-    info_records_parsed = [sanitize_string(line_chars) for line_chars in info_records]
-    return group_by_sections(info_records_parsed)
-
-
-def group_by_sections(info_records):
-    # 1. Split by top groupings
-    top_levels = get_top_levels(info_records)
-    # 2. Determine if in section by index number
-    grouped = OrderedDict()
-    for tidx, top_level in enumerate(top_levels):
-        grouped[top_level[1]] = []
-
-        try:
-            next_idx = top_levels[tidx + 1][0]
-        except IndexError:
-            next_idx = len(info_records) - 1
-
-        for idx in range(top_level[0], next_idx):
-            if idx == top_level[0]:
-                continue
-
-            grouped[top_level[1]].append(info_records[idx])
-
-    if "Version Info" in grouped.keys():
-        version_info = OrderedDict()
-        for line in grouped["Version Info"]:
-            split_line = line.split(":")
-            key = split_line[0]
-            val = ":".join(split_line[1:]).lstrip().rstrip()
-            if key != "":
-                version_info[key] = val
-        grouped["Version Info"] = version_info
-
-    return grouped
-
-
-def get_top_levels(info_records):
-    top_levels = []
-    for idx, line in enumerate(info_records):
-        pattern = re.compile(r"###[a-zA-Z\s]+")
-        if pattern.match(line):
-            clean_line = re.sub(r"[^\w\s]", "", line).lstrip().rstrip()
-            top_levels.append([idx, clean_line])
-
-    return top_levels
+    c_key = nested_key_list[0]  # the current key
+    if key_len == 1:
+        # at the final level
+        return c_key in dict_inst
+    else:
+        if c_key in dict_inst and isinstance(dict_inst[c_key], dict):
+            # go deeper
+            return _recursive_key_check(dict_inst[c_key], nested_key_list[1:])
+        else:
+            # either the key DNE or the next level is not another
+            # dictionary, in which case the next keys cannot exist
+            return False

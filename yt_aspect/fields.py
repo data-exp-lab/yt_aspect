@@ -5,7 +5,11 @@ from yt.fields.field_info_container import FieldInfoContainer
 # optionally methods on it that get called which can be subclassed.
 
 
-class ASPECTFieldInfo(FieldInfoContainer):
+class PVTUFieldInfo(FieldInfoContainer):
+    pass
+
+
+class ASPECTFieldInfo(PVTUFieldInfo):
 
     known_other_fields = (
         ("T", ("K", [], None)),

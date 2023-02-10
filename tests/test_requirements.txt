@@ -1,1 +1,4 @@
 pytest
+pyyaml
+pre-commit
+pytest-cov
