@@ -1,26 +1,33 @@
-import pytest
-import yt
-import unyt
 import os
+
+import pytest
+import unyt
+import yt
+
 import yt_aspect  # NOQA
 
 
 def get_file_path_from_data_info(dataset_type, data_info_dict, dataset_name):
     ds_info = data_info_dict[dataset_type][dataset_name]
     final_folder = os.path.split(ds_info["archive_path"])[-1]
-    fi_dir = os.path.join(data_info_dict["base_dir"],
-                          ds_info["archive_path"],
-                          final_folder,
-                          ds_info["relative_unpacked_path"])
+    fi_dir = os.path.join(
+        data_info_dict["base_dir"],
+        ds_info["archive_path"],
+        final_folder,
+        ds_info["relative_unpacked_path"],
+    )
     full_file = os.path.join(fi_dir, ds_info["sample_file"])
     return full_file
 
 
-@pytest.mark.parametrize("dataset_type, dataset_name",
-                         (("ASPECT", "cartesian_3D_nproc4"),
-                          ("ASPECT", "cartesian_3D_nproc1"),
-                          ("PVTU", "cleaned_aspect"))
-                         )
+@pytest.mark.parametrize(
+    "dataset_type, dataset_name",
+    (
+        ("ASPECT", "cartesian_3D_nproc4"),
+        ("ASPECT", "cartesian_3D_nproc1"),
+        ("PVTU", "cleaned_aspect"),
+    ),
+)
 def test_3d_aspect_load(pvtu_test_data, dataset_type, dataset_name):
 
     fi = get_file_path_from_data_info(dataset_type, pvtu_test_data, dataset_name)

@@ -4,8 +4,6 @@ import stat
 
 import numpy as np
 import xmltodict
-
-
 from yt.data_objects.index_subobjects.unstructured_mesh import UnstructuredMesh
 from yt.data_objects.static_output import Dataset
 from yt.data_objects.unions import MeshUnion
@@ -13,9 +11,8 @@ from yt.funcs import setdefaultattr
 from yt.geometry.unstructured_mesh_handler import UnstructuredIndex
 from yt.utilities.logger import ytLogger as mylog
 
-
 from .fields import ASPECTFieldInfo, PVTUFieldInfo
-from .util import decode_piece, _recursive_key_check, ExpatError
+from .util import ExpatError, _recursive_key_check, decode_piece
 
 
 class PVTUMesh(UnstructuredMesh):
@@ -57,7 +54,9 @@ class PVTUIndex(UnstructuredIndex):
     """
     for on-disk vtu files. assumes we have a single mesh split across vtu files.
     """
+
     _mesh_class = PVTUMesh
+
     def __init__(self, ds, dataset_type="pvtu"):
         super().__init__(ds, dataset_type)
 
@@ -330,7 +329,8 @@ class PVTUDataset(Dataset):
                 # check for multiple cell types within a single piece
                 raise NotImplementedError(
                     f"multiple cell types in piece {piece_id} of vtu {src_file}. "
-                    f"The {self.dataset_type} frontend can only handle single cell types at present."
+                    f"The {self.dataset_type} frontend can only handle single "
+                    "cell types at present."
                 )
 
             n_nodes = conn.size
@@ -500,9 +500,12 @@ class ASPECTDataset(PVTUDataset):
         storage_filename=None,
         units_override=None,
     ):
-        super().__init__(filename, dataset_type=dataset_type,
-                         storage_filename=storage_filename,
-                         units_override=units_override)
+        super().__init__(
+            filename,
+            dataset_type=dataset_type,
+            storage_filename=storage_filename,
+            units_override=units_override,
+        )
 
     @classmethod
     def _is_valid(self, datafile, *args, **kwargs):

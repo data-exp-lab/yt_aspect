@@ -1,7 +1,7 @@
 try:
-    from defusedexpat.pyexpat import ExpatError
+    from defusedexpat.pyexpat import ExpatError  # noqa: F401
 except ImportError:
-    from xml.parsers.expat import ExpatError
+    from xml.parsers.expat import ExpatError  # noqa: F401
 import base64
 import re
 import string
@@ -102,7 +102,6 @@ def get_top_levels(info_records):
     return top_levels
 
 
-
 def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
 
     key_len = len(nested_key_list)
@@ -121,4 +120,3 @@ def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
             # either the key DNE or the next level is not another
             # dictionary, in which case the next keys cannot exist
             return False
-

@@ -1,8 +1,9 @@
+import os
+import shutil
+import tarfile
+
 import pytest
 import tomli
-import os
-import tarfile
-import shutil
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -16,7 +17,7 @@ def pvtu_test_data():
     archives_to_unpack = set()
     for datasets in data_info.values():
         for dataset in datasets.values():
-            archive = dataset['archive_path'] + dataset['archive_ext']
+            archive = dataset["archive_path"] + dataset["archive_ext"]
             archives_to_unpack.add(os.path.join(base_dir, archive))
 
     remove_folders = []
