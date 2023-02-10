@@ -1,10 +1,5 @@
-python -m pip install build twine
-python -m build
-twine check dist/*
-# check that the
-on: pull_request
-
 name: Build Verification
+on: pull_request
 
 jobs:
   build-and-check:

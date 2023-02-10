@@ -10,7 +10,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@master
       with:
-        python-version: 3.8
+        python-version: 3.9
     - name: install
       id: install
       run : pip install -r tests/lint_requirements.txt
@@ -28,7 +28,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@master
       with:
-        python-version: 3.8
+        python-version: 3.9
     - name: install
       id: install
       run : pip install -r tests/lint_requirements.txt
@@ -46,7 +46,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@master
       with:
-        python-version: 3.8
+        python-version: 3.9
     - name: install
       id: install
       run : pip install -r tests/lint_requirements.txt
