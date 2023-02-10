@@ -1,0 +1,5 @@
+[run]
+source = yt_aspect
+
+[report]
+fail_under = 94
