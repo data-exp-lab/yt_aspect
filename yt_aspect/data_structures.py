@@ -108,28 +108,6 @@ class PVTUIndex(UnstructuredIndex):
             self.field_list += [("connect%d" % i, fname) for fname in fnames]
         self.field_list += [("all", fname) for fname in fnames]
 
-    def _get_mesh_union(self):
-        """
-        returns global connectivity and coordinate arrays across the meshes,
-        when the mesh is split up across chunks and treated as independent
-        meshes (no longer using this for now...).
-        """
-
-        if self.global_connectivity is None:
-            indices = np.concatenate(
-                [
-                    mesh.connectivity_indices + mesh._index_offset
-                    for mesh in self.mesh_union
-                ]
-            )
-            coords = np.concatenate(
-                [mesh.connectivity_coords for mesh in self.mesh_union]
-            )
-            self.global_connectivity = indices
-            self.global_coords = coords
-        offset = 0
-        return self.global_connectivity, self.global_coords, offset
-
 
 class PVTUDataset(Dataset):
     _index_class = PVTUIndex

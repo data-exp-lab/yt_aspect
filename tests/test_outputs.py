@@ -28,7 +28,7 @@ def get_file_path_from_data_info(dataset_type, data_info_dict, dataset_name):
         ("PVTU", "cleaned_aspect"),
     ),
 )
-def test_3d_aspect_load(pvtu_test_data, dataset_type, dataset_name):
+def test_3d_aspect_load(pvtu_test_data, dataset_type, dataset_name, tmp_path):
 
     fi = get_file_path_from_data_info(dataset_type, pvtu_test_data, dataset_name)
 
@@ -43,3 +43,10 @@ def test_3d_aspect_load(pvtu_test_data, dataset_type, dataset_name):
     T = ad[("connect0", "T")][0]
     if dataset_type == "ASPECT":
         assert T.units == unyt.K
+
+    _ = ad[("connect0", "velocity_x")][0]
+
+    outfi = tmp_path / "test.png"
+    slc = yt.SlicePlot(ds, "x", ("connect0", "T"))
+    slc.save(outfi)
+    assert os.path.isfile(outfi)
