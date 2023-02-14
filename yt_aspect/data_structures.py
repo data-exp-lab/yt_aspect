@@ -11,6 +11,7 @@ from yt.funcs import setdefaultattr
 from yt.geometry.unstructured_mesh_handler import UnstructuredIndex
 from yt.utilities.logger import ytLogger as mylog
 
+from ._utilities import yt_is
 from .fields import ASPECTFieldInfo, PVTUFieldInfo
 from .util import ExpatError, _recursive_key_check, decode_piece
 
@@ -162,10 +163,15 @@ class PVTUDataset(Dataset):
         setdefaultattr(self, "mass_unit", self.quan(1.0, "kg"))
         setdefaultattr(self, "time_unit", self.quan(1.0, "s"))
 
-    def _setup_coordinate_handler(self):
+    def _setup_coordinate_handler(self, axis_order=None):
         # ensure correct ordering of axes so plots aren't rotated (z should always be
         # on the vertical axis).
-        super()._setup_coordinate_handler()
+
+        if yt_is("<", "4.2.dev0"):
+            super()._setup_coordinate_handler()
+        else:
+            super()._setup_coordinate_handler(axis_order)
+
         self.coordinates._x_pairs = (("x", "y"), ("y", "x"), ("z", "x"))
         self.coordinates._y_pairs = (("x", "z"), ("y", "z"), ("z", "y"))
 
