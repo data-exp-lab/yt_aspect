@@ -23,3 +23,10 @@ relative_unpacked_path = "solution"
 sample_file = "solution-00003.pvtu"
 info = "cleaned version of ASPECT run that should be identified as a general PVTU not ASPECT"
 
+[PVTU.two2_with_invalid_els]
+archive_path = "data/pvtu/two2_with_invalid_els"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "."
+sample_file = "foo.pvtu"
+info = "2D PVTU with invalid elements"
+

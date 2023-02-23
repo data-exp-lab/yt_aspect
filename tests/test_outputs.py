@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pytest
 import unyt
 import yt
@@ -50,3 +51,24 @@ def test_3d_aspect_load(pvtu_test_data, dataset_type, dataset_name, tmp_path):
     slc = yt.SlicePlot(ds, "x", ("connect0", "T"))
     slc.save(outfi)
     assert os.path.isfile(outfi)
+
+
+def _get_slice_frb(ds):
+    slc = yt.SlicePlot(ds, "z", ("connect0", "Temperature2"))
+    slc._setup_plots()
+    return slc.frb[("connect0", "Temperature2")]
+
+
+def test_element_validation(pvtu_test_data):
+
+    # this sample ds does not include null elements... so not a great test.
+    fi = get_file_path_from_data_info("PVTU", pvtu_test_data, "two2_with_invalid_els")
+    ds_1 = yt_aspect.PVTUDataset(fi, detect_null_elements=True)
+    frb_1 = _get_slice_frb(ds_1)
+    n_finite_no_null = np.isfinite(frb_1).sum()
+
+    ds_0 = yt_aspect.PVTUDataset(fi, detect_null_elements=False)
+    frb_0 = _get_slice_frb(ds_0)
+    n_finite_w_null = np.isfinite(frb_0).sum()
+
+    assert n_finite_no_null > n_finite_w_null

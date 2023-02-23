@@ -37,7 +37,7 @@ def decode_binary(blob, use_zlib=True, dtype="<f4"):
     split_location = blob.find(b"==") + 2
     first = base64.decodebytes(blob[:split_location])
     second = base64.decodebytes(blob[split_location:])
-    if zlib:
+    if use_zlib:
         second = zlib.decompress(second)
     return np.frombuffer(first, dtype="<f4"), np.frombuffer(second, dtype=dtype)
 
