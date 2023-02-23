@@ -13,7 +13,7 @@ from yt.utilities.logger import ytLogger as mylog
 
 from ._utilities import yt_is
 from .fields import ASPECTFieldInfo, PVTUFieldInfo
-from .util import ExpatError, _recursive_key_check, decode_piece
+from .util import ExpatError, _recursive_key_check, _valid_element_mask, decode_piece
 
 
 class PVTUMesh(UnstructuredMesh):
@@ -120,12 +120,14 @@ class PVTUDataset(Dataset):
         dataset_type="pvtu",
         storage_filename=None,
         units_override=None,
+        detect_null_elements: bool = False,
     ):
         """
 
         A class used to represent a single timestep of a on-disk ASPECT dataset
 
         """
+        self._detect_null_elements = detect_null_elements
         self.data_dir = os.path.dirname(filename)
         super().__init__(filename, dataset_type, units_override=units_override)
         self.fluid_types += self._get_fluid_types()
@@ -287,6 +289,9 @@ class PVTUDataset(Dataset):
             self.parameters["field_to_piece_index"][src_file] = src_map
 
     def _read_pieces_from_single_vtu(self, src_file):
+        # reads the mesh and connectivity information from a single vtu file.
+        # a single vtu may contain multiple Pieces
+
         with open(src_file) as data:
             xml = xmltodict.parse(data.read())
             xmlPieces = xml["VTKFile"]["UnstructuredGrid"]["Piece"]
@@ -353,8 +358,14 @@ class PVTUDataset(Dataset):
         npc = n_p_cell_vals[0]
 
         conns = conns.reshape((conns.size // npc, npc))
+        n_invalid = 0
+        if self._detect_null_elements:
+            valid_elements, n_invalid = _valid_element_mask(conns)
+            # only modifying the connectivity should be OK...
+            if n_invalid > 0:
+                conns = conns[valid_elements, :]
 
-        return coords, conns, alloffs, npc
+        return coords, conns, alloffs, npc, n_invalid
 
     def _read_pieces(self):
         # reads coordinates and connectivity from pieces, returns the mesh
@@ -373,11 +384,14 @@ class PVTUDataset(Dataset):
         node_offsets = []  # the offset within each vtu
         element_count = []  # total elements in each vtu
         nodes_per_cell = []  # nodes per cell for each vtu
-
+        total_null_cells = 0
         current_offset = 0  # the current NODE offset to global coordinate index
         for src in vtu_pieces:
             src_file = os.path.join(self.data_dir, src["@Source"])
-            coord, con, all_offs, npc = self._read_pieces_from_single_vtu(src_file)
+            coord, con, all_offs, npc, n_invalid = self._read_pieces_from_single_vtu(
+                src_file
+            )
+            total_null_cells += n_invalid
             nodes_per_cell.append(npc)
 
             node_offsets.append(current_offset)
@@ -391,6 +405,12 @@ class PVTUDataset(Dataset):
             # rather than the number of elements in conn:
             current_offset += coord.shape[0]
 
+        if total_null_cells > 0:
+            # this will only emit on the first index build.
+            mylog.warning(
+                f"Detected {total_null_cells} total invalid elements. Elements will "
+                "be ignored."
+            )
         # check that we have the same cell types across vtu files
         nodes_per_cell = np.unique(nodes_per_cell)
         if len(nodes_per_cell) > 1:
