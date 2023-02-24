@@ -9,4 +9,4 @@ from .data_structures import (  # noqa: F401
 from .fields import ASPECTFieldInfo, PVTUFieldInfo  # noqa: F401
 from .io import IOHandlerASPECT, IOHandlerPVTU  # noqa: F401
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
