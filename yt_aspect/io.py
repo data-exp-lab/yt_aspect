@@ -22,12 +22,6 @@ class IOHandlerPVTU(BaseIOHandler):
         self.elem_fields = ds._get_elem_names()
         self._detect_null_elements = ds._detect_null_elements
 
-    def _read_particle_coords(self, chunks, ptf):
-        pass
-
-    def _read_particle_fields(self, chunks, ptf, selector):
-        pass
-
     def _read_fluid_selection(self, chunks, selector, fields, size):
         # This needs to allocate a set of arrays inside a dictionary, where the
         # keys are the (ftype, fname) tuples and the values are arrays that
@@ -89,8 +83,6 @@ class IOHandlerPVTU(BaseIOHandler):
                             vtu_field = self._read_single_vtu_field(
                                 xmlPieces, fname, f2id, npc, vectordim=vdim
                             )
-                            # vtu_field = vtu_field[vtu_conn1d]
-                            # vtu_field = vtu_field.reshape((vtu_conn1d.size // npc, npc))
                             vtu_field = vtu_field[vtu_mask, :]
                             rv[field].append(vtu_field)
 
@@ -151,11 +143,6 @@ class IOHandlerPVTU(BaseIOHandler):
                 return vtu_data[valid_elements, :]
 
         return vtu_data
-
-    def _read_chunk_data(self, chunk, fields):
-        # This reads the data from a single chunk, and is only used for
-        # caching.
-        pass
 
 
 class IOHandlerASPECT(IOHandlerPVTU):
