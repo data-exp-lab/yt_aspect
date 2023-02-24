@@ -6,6 +6,7 @@ import unyt
 import yt
 
 import yt_aspect  # NOQA
+from yt_aspect.data_structures import _is_aspect_datafile, _is_pvtu_datafile
 
 
 def get_file_path_from_data_info(dataset_type, data_info_dict, dataset_name):
@@ -75,3 +76,30 @@ def test_element_validation(pvtu_test_data):
     n_finite_w_null = np.isfinite(frb_0).sum()
 
     assert n_finite_no_null > n_finite_w_null
+
+
+@pytest.mark.parametrize(
+    "dataset_type, dataset_name",
+    (
+        ("ASPECT", "cartesian_3D_nproc4"),
+        ("ASPECT", "cartesian_3D_nproc1"),
+        ("ASPECT", "shell_2D"),
+        ("PVTU", "cleaned_aspect"),
+    ),
+)
+def test_dataset_validation(pvtu_test_data, dataset_type, dataset_name):
+    fi = get_file_path_from_data_info(dataset_type, pvtu_test_data, dataset_name)
+    if dataset_type == "ASPECT":
+        assert _is_aspect_datafile(fi)
+        assert _is_pvtu_datafile(fi)
+    else:
+        assert _is_aspect_datafile(fi) is False
+        assert _is_pvtu_datafile(fi)
+
+
+def test_dataset_invalidation():
+    assert _is_aspect_datafile("file/that/does/not/exist") is False
+    assert _is_pvtu_datafile("file/that/does/not/exist") is False
+
+    assert _is_aspect_datafile("file/that/looks/like/file.pvtu") is False
+    assert _is_pvtu_datafile("file/that/looks/like/file.pvtu") is False
