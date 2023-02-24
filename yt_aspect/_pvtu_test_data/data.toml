@@ -14,6 +14,13 @@ relative_unpacked_path = "nproc_1/solution"
 sample_file = "solution-00002.pvtu"
 info = "single processor ASPECT cookbook, multiple timesteps"
 
+[ASPECT.shell_2D]
+archive_path = "data/aspect/output_shell_simple_2d"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "solution"
+sample_file = "solution-00002.pvtu"
+info = "2D spherical shell"
+
 [PVTU]
 
 [PVTU.cleaned_aspect]
@@ -22,4 +29,11 @@ archive_ext = ".tar.gz"
 relative_unpacked_path = "solution"
 sample_file = "solution-00003.pvtu"
 info = "cleaned version of ASPECT run that should be identified as a general PVTU not ASPECT"
+
+[PVTU.two2_with_invalid_els]
+archive_path = "data/pvtu/two2_with_invalid_els"
+archive_ext = ".tar.gz"
+relative_unpacked_path = "."
+sample_file = "foo.pvtu"
+info = "2D PVTU with invalid elements"
 

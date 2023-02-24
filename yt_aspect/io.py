@@ -4,7 +4,7 @@ import numpy as np
 import xmltodict
 from yt.utilities.io_handler import BaseIOHandler
 
-from .util import decode_binary, decode_piece, type_decider
+from .util import _valid_element_mask, decode_binary, decode_piece, type_decider
 
 
 class IOHandlerPVTU(BaseIOHandler):
@@ -20,12 +20,7 @@ class IOHandlerPVTU(BaseIOHandler):
         super().__init__(ds)
         self.node_fields = ds._get_nod_names()
         self.elem_fields = ds._get_elem_names()
-
-    def _read_particle_coords(self, chunks, ptf):
-        pass
-
-    def _read_particle_fields(self, chunks, ptf, selector):
-        pass
+        self._detect_null_elements = ds._detect_null_elements
 
     def _read_fluid_selection(self, chunks, selector, fields, size):
         # This needs to allocate a set of arrays inside a dictionary, where the
@@ -85,11 +80,9 @@ class IOHandlerPVTU(BaseIOHandler):
                                 vdim = self._xyz_to_dim[fname.split("_")[-1]]
                                 fname = "velocity"
 
-                            vtu_field, vtu_conn1d = self._read_single_vtu_field(
-                                xmlPieces, fname, f2id, vectordim=vdim
+                            vtu_field = self._read_single_vtu_field(
+                                xmlPieces, fname, f2id, npc, vectordim=vdim
                             )
-                            vtu_field = vtu_field[vtu_conn1d]
-                            vtu_field = vtu_field.reshape((vtu_conn1d.size // npc, npc))
                             vtu_field = vtu_field[vtu_mask, :]
                             rv[field].append(vtu_field)
 
@@ -99,8 +92,18 @@ class IOHandlerPVTU(BaseIOHandler):
         return rv
 
     def _read_single_vtu_field(
-        self, xmlPieces, fieldname, field_to_piece_index, vectordim=-1, ndims=3
+        self,
+        xmlPieces,
+        fieldname,
+        field_to_piece_index,
+        npc,
+        vectordim=-1,
+        ndims=3,
     ):
+        # xmlPieces : the vtu file pieces (not de-coded)
+        # fieldname : the field to fetch
+        # field_to_piece_index : the index of the field within a single xmlPiece array
+        # npc : nodes per cell
         vtu_data = []
         pieceoff = 0
         vtu_conns = []
@@ -128,14 +131,18 @@ class IOHandlerPVTU(BaseIOHandler):
             pieceoff = pieceoff + coords.shape[0]
 
         vtu_data = np.concatenate(vtu_data)
-        vtu_conns = np.array(vtu_conns)
+        vtu_conns = np.array(vtu_conns)  # 1D connectivity
 
-        return vtu_data, vtu_conns
+        vtu_data = vtu_data[vtu_conns]  # 1D data array
+        vtu_data = vtu_data.reshape((vtu_conns.size // npc, npc))
 
-    def _read_chunk_data(self, chunk, fields):
-        # This reads the data from a single chunk, and is only used for
-        # caching.
-        pass
+        if self._detect_null_elements:
+            vtu_conns = vtu_conns.reshape((vtu_conns.size // npc, npc))
+            valid_elements, n_invalid = _valid_element_mask(vtu_conns)
+            if n_invalid > 0:
+                return vtu_data[valid_elements, :]
+
+        return vtu_data
 
 
 class IOHandlerASPECT(IOHandlerPVTU):
