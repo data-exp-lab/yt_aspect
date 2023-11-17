@@ -24,7 +24,6 @@ To load a single timestep:
 
 ```python
 import yt
-import yt_aspect
 
 ds = yt.load('output_convection_box_3d/solution/solution-00000.pvtu')
 ```

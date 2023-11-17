@@ -5,7 +5,6 @@ import pytest
 import unyt
 import yt
 
-import yt_aspect  # NOQA
 from yt_aspect.data_structures import _is_aspect_datafile, _is_pvtu_datafile
 
 

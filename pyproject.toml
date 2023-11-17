@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "yt_aspect"
-version = "0.1.1"
+version = "0.2.0"
 authors = [
   { name="Chris Havlin", email="chris.havlin@gmail.com" },
 ]
@@ -13,13 +13,30 @@ readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies=['yt>4.1.0', 'xmltodict']
+dependencies=['yt>=4.2.2', 'xmltodict']
 
 
 [project.urls]
 "Homepage" = "https://github.com/data-exp-lab/yt_aspect"
 "Bug Tracker" = "https://github.com/data-exp-lab/yt_aspect/issues"
 
+[project.entry-points."yt.frontends"]
+aspect = "yt_aspect.api:ASPECTDataset"
+pvtu = "yt_aspect.api:PVTUDataset"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=6.1",
+    "tomli",
+    "pytest-cov",
+]
+dev = [
+    'pre-commit',
+]

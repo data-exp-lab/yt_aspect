@@ -11,7 +11,6 @@ from yt.funcs import setdefaultattr
 from yt.geometry.unstructured_mesh_handler import UnstructuredIndex
 from yt.utilities.logger import ytLogger as mylog
 
-from ._utilities import yt_is
 from .fields import ASPECTFieldInfo, PVTUFieldInfo
 from .util import ExpatError, _recursive_key_check, _valid_element_mask, decode_piece
 
@@ -122,7 +121,7 @@ class PVTUDataset(Dataset):
     ):
         """
 
-        A class used to represent a single timestep of a on-disk ASPECT dataset
+        A class used to represent a single timestep of a on-disk PVTU dataset
 
         """
         self._detect_null_elements = detect_null_elements
@@ -167,10 +166,7 @@ class PVTUDataset(Dataset):
         # ensure correct ordering of axes so plots aren't rotated (z should always be
         # on the vertical axis).
 
-        if yt_is("<", "4.2.dev0"):
-            super()._setup_coordinate_handler()
-        else:
-            super()._setup_coordinate_handler(axis_order)
+        super()._setup_coordinate_handler(axis_order)
 
         self.coordinates._x_pairs = (("x", "y"), ("y", "x"), ("z", "x"))
         self.coordinates._y_pairs = (("x", "z"), ("y", "z"), ("z", "y"))
