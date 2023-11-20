@@ -172,7 +172,6 @@ class PVTUDataset(Dataset):
         self.coordinates._y_pairs = (("x", "z"), ("y", "z"), ("z", "y"))
 
     def _parse_parameter_file(self):
-
         # store the top level pvtu info
         with open(self.parameter_filename) as pvtu_fi:
             self.parameters["pXML"] = xmltodict.parse(pvtu_fi.read())
@@ -474,7 +473,6 @@ class ASPECTUnstructuredMesh(PVTUMesh):
 
 
 class ASPECTUnstructuredIndex(PVTUIndex):
-
     _mesh_class = ASPECTUnstructuredMesh
 
     def __init__(self, ds, dataset_type="aspect"):

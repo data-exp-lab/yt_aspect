@@ -33,7 +33,6 @@ def get_file_path_from_data_info(dataset_type, data_info_dict, dataset_name):
 def test_3d_aspect_load(
     pvtu_test_data, dataset_type, dataset_name, expected_dims, tmp_path
 ):
-
     fi = get_file_path_from_data_info(dataset_type, pvtu_test_data, dataset_name)
 
     if os.path.isfile(fi) is False:
@@ -63,7 +62,6 @@ def _get_slice_frb(ds):
 
 
 def test_element_validation(pvtu_test_data):
-
     # this sample ds does not include null elements... so not a great test.
     fi = get_file_path_from_data_info("PVTU", pvtu_test_data, "two2_with_invalid_els")
     ds_1 = yt.load(fi, detect_null_elements=True)
