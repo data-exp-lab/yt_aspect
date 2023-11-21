@@ -32,7 +32,6 @@ def test_yt_version_bad():
     "n_elements,nodes_per_element,n_invalid", [(5, 3, 2), (5, 8, 2), (5, 8, 0)]
 )
 def test_valid_element_mask(n_elements, nodes_per_element, n_invalid):
-
     one_element = np.arange(nodes_per_element)
     test_conn = np.repeat(one_element[:, np.newaxis], n_elements, axis=1).transpose()
 

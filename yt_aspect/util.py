@@ -43,7 +43,6 @@ def decode_binary(blob, use_zlib=True, dtype="<f4"):
 
 
 def _recursive_key_check(dict_inst: dict, nested_key_list: list) -> bool:
-
     key_len = len(nested_key_list)
     if key_len == 0:
         raise ValueError("nested_key_list must have at least 1 element")

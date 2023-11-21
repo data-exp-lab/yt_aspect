@@ -10,7 +10,6 @@ class PVTUFieldInfo(FieldInfoContainer):
 
 
 class ASPECTFieldInfo(PVTUFieldInfo):
-
     known_other_fields = (
         ("T", ("K", [], None)),
         ("p", ("Pa", [], None)),
@@ -39,7 +38,6 @@ class ASPECTFieldInfo(PVTUFieldInfo):
     log_fields = ["viscosity", "strain_rate"]
 
     def __init__(self, ds, field_list):
-
         # add the stress tensors to the known fields
         for xx in ["xx", "xy", "xz", "yy", "yz", "zz"]:
             self.known_other_fields += (("shear_stress_" + xx, ("Pa", [], None)),)

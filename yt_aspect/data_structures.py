@@ -172,7 +172,6 @@ class PVTUDataset(Dataset):
         self.coordinates._y_pairs = (("x", "z"), ("y", "z"), ("z", "y"))
 
     def _parse_parameter_file(self):
-
         # store the top level pvtu info
         with open(self.parameter_filename) as pvtu_fi:
             self.parameters["pXML"] = xmltodict.parse(pvtu_fi.read())
@@ -299,7 +298,7 @@ class PVTUDataset(Dataset):
         pieceoff = 0  # connectivity index offset between pieces
 
         # do some piece sanitization and documentation
-        if type(xmlPieces) != list:
+        if not isinstance(xmlPieces, list):
             # handles the case where we have a single piece in this vtu file
             xmlPieces = [xmlPieces]
         self._add_piece_to_field_map(src_file, xmlPieces)
@@ -474,7 +473,6 @@ class ASPECTUnstructuredMesh(PVTUMesh):
 
 
 class ASPECTUnstructuredIndex(PVTUIndex):
-
     _mesh_class = ASPECTUnstructuredMesh
 
     def __init__(self, ds, dataset_type="aspect"):

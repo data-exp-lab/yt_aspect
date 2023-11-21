@@ -8,7 +8,6 @@ import tomli
 
 @pytest.fixture(scope="session", autouse=True)
 def pvtu_test_data():
-
     data_info_file = "yt_aspect/_pvtu_test_data/data.toml"
     with open(data_info_file, "rb") as f:
         data_info = tomli.load(f)

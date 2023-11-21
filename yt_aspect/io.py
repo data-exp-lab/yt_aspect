@@ -55,7 +55,6 @@ class IOHandlerPVTU(BaseIOHandler):
                     # each mesh piece will pull the connectivity, mask values
                     # for the indices corresponding to each vtu file
                     for vtu_id, vtu_fi in enumerate(mesh.filenames):
-
                         # the element mask for this piece
                         element_offset_start = el_counts[0:vtu_id].sum()
                         element_offset_end = element_offset_start + el_counts[vtu_id]
@@ -68,7 +67,7 @@ class IOHandlerPVTU(BaseIOHandler):
                             xml = xmltodict.parse(data.read())
                             xmlPieces = xml["VTKFile"]["UnstructuredGrid"]["Piece"]
 
-                        if type(xmlPieces) != list:
+                        if not isinstance(xmlPieces, list):
                             xmlPieces = [xmlPieces]
 
                         for field in fields:
