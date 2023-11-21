@@ -67,7 +67,7 @@ class IOHandlerPVTU(BaseIOHandler):
                             xml = xmltodict.parse(data.read())
                             xmlPieces = xml["VTKFile"]["UnstructuredGrid"]["Piece"]
 
-                        if type(xmlPieces) != list:
+                        if not isinstance(xmlPieces, list):
                             xmlPieces = [xmlPieces]
 
                         for field in fields:

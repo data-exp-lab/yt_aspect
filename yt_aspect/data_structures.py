@@ -298,7 +298,7 @@ class PVTUDataset(Dataset):
         pieceoff = 0  # connectivity index offset between pieces
 
         # do some piece sanitization and documentation
-        if type(xmlPieces) != list:
+        if not isinstance(xmlPieces, list):
             # handles the case where we have a single piece in this vtu file
             xmlPieces = [xmlPieces]
         self._add_piece_to_field_map(src_file, xmlPieces)
