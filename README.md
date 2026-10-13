@@ -1,6 +1,6 @@
 # yt_aspect
 
-This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://aspect.geodynamics.org/) unstructured mesh output in .pvtu format. It also includes a general .pvtu frontend. 
+This package is a plugin for [yt](https://yt-project.org) that adds a frontend for [ASPECT](https://aspect.geodynamics.org/) unstructured mesh output in .pvtu format. It also includes a general .pvtu frontend.
 
 ## Installation
 
@@ -16,7 +16,7 @@ To install a development version,  clone this repository, `cd` into the clone an
 pip install -e .
 ```
 
-A number of dependencies will be installed for you, including `yt` if you don't already have it. 
+A number of dependencies will be installed for you, including `yt` if you don't already have it.
 
 ## Usage
 
@@ -25,7 +25,7 @@ To load a single timestep:
 ```python
 import yt
 
-ds = yt.load('output_convection_box_3d/solution/solution-00000.pvtu')
+ds = yt.load("output_convection_box_3d/solution/solution-00000.pvtu")
 ```
 
 From there, you can work with the dataset as a normal yt dataset (though not all functionality will work -- open an issue [here](https://github.com/data-exp-lab/yt_aspect/issues) if something you need doesn't work!). Until there are ASPECT specific examples in this repository, check out the [main yt documentation](https://yt-project.org/doc/) for examples.
